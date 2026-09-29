@@ -9,7 +9,6 @@
 [![API Docs](https://img.shields.io/badge/API_Docs-Swagger-059669?style=for-the-badge&logo=swagger)](https://agrivision-45zi.onrender.com/api/docs/)
 [![GitHub](https://img.shields.io/badge/Source-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/avantikaar/agrivision)
 
-<img src="docs/dashboard.png" alt="AgriVision Dashboard" width="100%" />
 
 **Live Demo:** [agrivision-orcin.vercel.app](https://agrivision-orcin.vercel.app) · **Test account:** `farmer1` / `testpass123`
 
