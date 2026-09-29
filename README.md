@@ -1,4 +1,3 @@
-
 <div align="center">
 
 # 🌱 AgriVision
@@ -9,10 +8,25 @@
 [![API Docs](https://img.shields.io/badge/API_Docs-Swagger-059669?style=for-the-badge&logo=swagger)](https://agrivision-45zi.onrender.com/api/docs/)
 [![GitHub](https://img.shields.io/badge/Source-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/avantikaar/agrivision)
 
-
 **Live Demo:** [agrivision-orcin.vercel.app](https://agrivision-orcin.vercel.app) · **Test account:** `farmer1` / `testpass123`
 
 </div>
+
+---
+
+## 📸 Screenshots
+
+### Login
+![Login Page](docs/login.png)
+
+### Dashboard
+![Dashboard](docs/dashboard.png)
+
+### Upload Report
+![Upload Page](docs/upload.png)
+
+### AI Diagnosis Result
+![Report Detail](docs/report.png)
 
 ---
 
@@ -42,6 +56,7 @@ The platform:
 | 📱 **Mobile-Responsive UI** | Built mobile-first — works on phones where farmers actually use it |
 
 ---
+
 
 ### The AI Processing Pipeline
 
@@ -84,22 +99,6 @@ This design **decouples slow LLM calls from the HTTP request lifecycle**, keepin
 
 ---
 
-## 📸 Screenshots
-
-### Login
-![Login Page](docs/login.png)
-
-### Dashboard
-![Dashboard](docs/dashboard.png)
-
-### Upload Report
-![Upload Page](docs/upload.png)
-
-### AI Diagnosis Result
-![Report Detail](docs/report.png)
-
----
-
 ## 🔌 API Reference
 
 | Method | Endpoint | Description | Auth |
@@ -113,8 +112,6 @@ This design **decouples slow LLM calls from the HTTP request lifecycle**, keepin
 | GET | `/api/reports/{id}/` | Retrieve a report with AI results | ✅ |
 | GET | `/api/outbreaks/` | List active outbreak alerts | ✅ |
 | GET | `/api/docs/` | Interactive Swagger UI | ❌ |
-
-Full interactive spec: [agrivision-45zi.onrender.com/api/docs](https://agrivision-45zi.onrender.com/api/docs/)
 
 ---
 
