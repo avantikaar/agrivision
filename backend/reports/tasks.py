@@ -1,13 +1,15 @@
+import os
 from celery import shared_task, chain
 from django.utils import timezone
 
 from .models import CropReport
 from .genai import detect_disease, generate_treatment
 
+USE_CELERY = os.environ.get('USE_CELERY', 'false').lower() == 'true'
+
 
 @shared_task
 def process_report(report_id: int):
-    """Entry point — runs the full 3-task chain."""
     pipeline = chain(
         classify_disease.s(report_id),
         build_treatment.s(),
@@ -21,14 +23,7 @@ def classify_disease(self, report_id: int):
     report = CropReport.objects.get(id=report_id)
     report.status = 'processing'
     report.save(update_fields=['status'])
-
-    try:
-        result = detect_disease(report.image.path)
-    except Exception as exc:
-        report.status = 'failed'
-        report.save(update_fields=['status'])
-        raise self.retry(exc=exc)
-
+    result = detect_disease(report.image.path)
     return {
         'report_id': report_id,
         'disease': result['disease'],
@@ -60,4 +55,16 @@ def save_results(data: dict):
     report.status = 'completed'
     report.processed_at = timezone.now()
     report.save()
+
+    # Outbreak check — safe regardless of mode
+    try:
+        from outbreaks.tasks import check_outbreak
+        if USE_CELERY:
+            check_outbreak.delay(report.farmer.district, report.detected_disease)
+        else:
+            check_outbreak.run(report.farmer.district, report.detected_disease)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"Outbreak check skipped: {e}")
+
     return report.id

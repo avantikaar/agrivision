@@ -1,9 +1,11 @@
 import os
+import logging
 from rest_framework import generics, permissions
 
 from .models import CropReport
 from .serializers import CropReportSerializer
 
+logger = logging.getLogger(__name__)
 USE_CELERY = os.environ.get('USE_CELERY', 'false').lower() == 'true'
 
 
@@ -21,18 +23,13 @@ class ReportListCreateView(generics.ListCreateAPIView):
             from .tasks import process_report
             process_report.delay(report.id)
         else:
-            # Sync fallback — AI errors are caught, report marked 'failed'
-            # The HTTP response still succeeds so the frontend can show the failed state.
             from .tasks import classify_disease, build_treatment, save_results
             try:
-                data = classify_disease(report.id)
-                data = build_treatment(data)
-                save_results(data)
+                data = classify_disease.run(report.id)
+                data = build_treatment.run(data)
+                save_results.run(data)
             except Exception as e:
-                import logging
-                logging.getLogger(__name__).exception(
-                    f"Sync AI pipeline failed for report {report.id}: {e}"
-                )
+                logger.exception(f"Sync AI pipeline failed for report {report.id}: {e}")
                 report.status = 'failed'
                 report.save(update_fields=['status'])
 
