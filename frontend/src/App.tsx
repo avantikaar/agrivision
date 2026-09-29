@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Navbar from './components/Navbar'
@@ -8,7 +9,7 @@ import UploadPage from './pages/UploadPage'
 import ReportDetailPage from './pages/ReportDetailPage'
 import OutbreaksPage from './pages/OutbreaksPage'
 
-function ProtectedLayout({ children }: { children: React.ReactNode }) {
+function ProtectedLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth()
   if (loading) {
     return (
